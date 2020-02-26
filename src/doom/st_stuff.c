@@ -293,6 +293,10 @@ static st_stateenum_t	st_gamestate;
 // whether left-side main status bar is active
 static boolean		st_statusbaron;
 
+// [crispy] whether compact HUD with widescreen is active
+
+static boolean      st_compacthud;
+
 // [crispy] distinguish classic status bar with background and player face from Crispy HUD
 static boolean		st_crispyhud;
 static boolean		st_classicstatusbar;
@@ -1843,7 +1847,7 @@ void ST_drawWidgets(boolean refresh)
     dp_translation = NULL;
 
     // [crispy] draw "special widgets" in the Crispy HUD
-    if (st_crispyhud)
+    if (st_crispyhud || st_compacthud)
     {
 	// [crispy] draw berserk pack instead of no ammo if appropriate
 	if (plyr->readyweapon == wp_fist && plyr->powers[pw_strength])
@@ -1947,10 +1951,13 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     // [crispy] immediately redraw status bar after help screens have been shown
     st_firsttime = st_firsttime || refresh || inhelpscreens;
 
+    st_compacthud = crispy->widescreen && screenblocks == 7;
+
     // [crispy] distinguish classic status bar with background and player face from Crispy HUD
     st_crispyhud = screenblocks >= CRISPY_HUD && (!automapactive || crispy->automapoverlay);
     st_classicstatusbar = st_statusbaron && !st_crispyhud && !crispy->widescreen;
     st_statusbarface = st_classicstatusbar || (st_crispyhud && screenblocks == CRISPY_HUD);
+    
 
     if (crispy->cleanscreenshot == 2)
         return;

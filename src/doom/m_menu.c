@@ -1887,7 +1887,7 @@ void M_ChangeDetail(int choice)
 void M_SizeDisplay(int choice)
 {
     // [crispy] initialize screenSize_min
-    screenSize_min = crispy->widescreen ? 8 : 0;
+    screenSize_min = crispy->widescreen ? 7 : 0;
 
     switch(choice)
     {
@@ -2536,7 +2536,7 @@ boolean M_Responder (event_t* ev)
     // [crispy] take screen shot without weapons and HUD
     if (key != 0 && key == key_menu_cleanscreenshot)
     {
-	crispy->cleanscreenshot = (screenblocks > 10) ? 2 : 1;
+	crispy->cleanscreenshot = (screenblocks > 10 || crispy->widescreen) ? 2 : 1;
     }
 
     if ((devparm && key == key_menu_help) ||

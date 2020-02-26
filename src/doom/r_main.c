@@ -806,12 +806,12 @@ void R_ExecuteSetViewSize (void)
 
     setsizeneeded = false;
 
-	// [crispy] make absolutely sure screenblocks is never < 11 in widescreen mode
+	// [crispy] make absolutely sure screenblocks is never < 10 in widescreen mode
 	if (crispy->widescreen)
 	{
 		extern void M_SizeDisplay(int choice);
 
-		while (setblocks < 11)
+		while (setblocks < 10)
 		{
 			M_SizeDisplay(1);
 			R_ExecuteSetViewSize();
@@ -819,7 +819,7 @@ void R_ExecuteSetViewSize (void)
 		}
 	}
 
-    if (setblocks >= 11) // [crispy] Crispy HUD
+    if (setblocks >= 10) // [crispy] Crispy HUD
     {
 	scaledviewwidth = SCREENWIDTH;
 	viewheight = SCREENHEIGHT;

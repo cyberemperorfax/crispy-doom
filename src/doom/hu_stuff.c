@@ -813,7 +813,7 @@ static void HU_DrawCrosshair (void)
 
     V_DrawPatch(ORIGWIDTH/2 -
                 laserpatch[crispy->crosshairtype].w,
-                ((screenblocks <= 10) ? (ORIGHEIGHT-ST_HEIGHT)/2 : ORIGHEIGHT/2) -
+                ((screenblocks <= 10 && !crispy->widescreen) ? (ORIGHEIGHT-ST_HEIGHT)/2 : ORIGHEIGHT/2) -
                 laserpatch[crispy->crosshairtype].h,
                 patch);
 
