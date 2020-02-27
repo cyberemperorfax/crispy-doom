@@ -37,7 +37,7 @@
 #include "p_local.h" // [crispy] MLOOKUNIT
 #include "r_local.h"
 #include "r_sky.h"
-#include "st_stuff.h" // [crispy] ST_refreshBackground()
+#include "st_stuff.h" // [crispy] ST_refreshBackground(),  ST_createWidgets(), st_compacthud
 
 
 
@@ -786,9 +786,17 @@ R_SetViewSize
 ( int		blocks,
   int		detail )
 {
+	extern boolean st_compacthud;
+	extern void ST_createWidgets(void);
+
     setsizeneeded = true;
     setblocks = blocks;
     setdetail = detail;
+	
+	if (st_compacthud) // widescreen + narrow variation of Crispy HUD
+	{
+		ST_createWidgets();
+	}
 }
 
 

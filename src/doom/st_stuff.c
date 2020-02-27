@@ -138,75 +138,79 @@ extern boolean inhelpscreens; // [crispy] prevent palette changes
 //       into a buffer,
 //       or into the frame buffer?
 
+
+// Universal deltawidth that is zero for compact HUD even in case of widescreen rendering 
+#define UNIVERSAL_DELTAW	DELTAWIDTH * (screenblocks > 10)
+
 // AMMO number pos.
 #define ST_AMMOWIDTH		3	
-#define ST_AMMOX			(44 - DELTAWIDTH)
+#define ST_AMMOX			(44 - UNIVERSAL_DELTAW)
 #define ST_AMMOY			171
 
 // HEALTH number pos.
 #define ST_HEALTHWIDTH		3	
-#define ST_HEALTHX			(90 - DELTAWIDTH)
+#define ST_HEALTHX			(90 - UNIVERSAL_DELTAW)
 #define ST_HEALTHY			171
 
 // Weapon pos.
-#define ST_ARMSX			(111 - DELTAWIDTH)
+#define ST_ARMSX			(111 - UNIVERSAL_DELTAW)
 #define ST_ARMSY			172
-#define ST_ARMSBGX			(104 - DELTAWIDTH)
+#define ST_ARMSBGX			(104 - UNIVERSAL_DELTAW)
 #define ST_ARMSBGY			168
 #define ST_ARMSXSPACE		12
 #define ST_ARMSYSPACE		10
 
 // Frags pos.
-#define ST_FRAGSX			(138 - DELTAWIDTH)
+#define ST_FRAGSX			(138 - UNIVERSAL_DELTAW)
 #define ST_FRAGSY			171	
 #define ST_FRAGSWIDTH		2
 
 // ARMOR number pos.
 #define ST_ARMORWIDTH		3
-#define ST_ARMORX			(221 + DELTAWIDTH)
+#define ST_ARMORX			(221 + UNIVERSAL_DELTAW)
 #define ST_ARMORY			171
 
 // Key icon positions.
 #define ST_KEY0WIDTH		8
 #define ST_KEY0HEIGHT		5
-#define ST_KEY0X			(239 + DELTAWIDTH)
+#define ST_KEY0X			(239 + UNIVERSAL_DELTAW)
 #define ST_KEY0Y			171
 #define ST_KEY1WIDTH		ST_KEY0WIDTH
-#define ST_KEY1X			(239 + DELTAWIDTH)
+#define ST_KEY1X			(239 + UNIVERSAL_DELTAW)
 #define ST_KEY1Y			181
 #define ST_KEY2WIDTH		ST_KEY0WIDTH
-#define ST_KEY2X			(239 + DELTAWIDTH)
+#define ST_KEY2X			(239 + UNIVERSAL_DELTAW)
 #define ST_KEY2Y			191
 
 // Ammunition counter.
 #define ST_AMMO0WIDTH		3
 #define ST_AMMO0HEIGHT		6
-#define ST_AMMO0X			(288 + DELTAWIDTH)
+#define ST_AMMO0X			(288 + UNIVERSAL_DELTAW)
 #define ST_AMMO0Y			173
 #define ST_AMMO1WIDTH		ST_AMMO0WIDTH
-#define ST_AMMO1X			(288 + DELTAWIDTH)
+#define ST_AMMO1X			(288 + UNIVERSAL_DELTAW)
 #define ST_AMMO1Y			179
 #define ST_AMMO2WIDTH		ST_AMMO0WIDTH
-#define ST_AMMO2X			(288 + DELTAWIDTH)
+#define ST_AMMO2X			(288 + UNIVERSAL_DELTAW)
 #define ST_AMMO2Y			191
 #define ST_AMMO3WIDTH		ST_AMMO0WIDTH
-#define ST_AMMO3X			(288 + DELTAWIDTH)
+#define ST_AMMO3X			(288 + UNIVERSAL_DELTAW)
 #define ST_AMMO3Y			185
 
 // Indicate maximum ammunition.
 // Only needed because backpack exists.
 #define ST_MAXAMMO0WIDTH		3
 #define ST_MAXAMMO0HEIGHT		5
-#define ST_MAXAMMO0X		(314 + DELTAWIDTH)
+#define ST_MAXAMMO0X		(314 + UNIVERSAL_DELTAW)
 #define ST_MAXAMMO0Y		173
 #define ST_MAXAMMO1WIDTH		ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO1X		(314 + DELTAWIDTH)
+#define ST_MAXAMMO1X		(314 + UNIVERSAL_DELTAW)
 #define ST_MAXAMMO1Y		179
 #define ST_MAXAMMO2WIDTH		ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO2X		(314 + DELTAWIDTH)
+#define ST_MAXAMMO2X		(314 + UNIVERSAL_DELTAW)
 #define ST_MAXAMMO2Y		191
 #define ST_MAXAMMO3WIDTH		ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO3X		(314 + DELTAWIDTH)
+#define ST_MAXAMMO3X		(314 + UNIVERSAL_DELTAW)
 #define ST_MAXAMMO3Y		185
 
 // pistol
@@ -295,7 +299,7 @@ static boolean		st_statusbaron;
 
 // [crispy] whether compact HUD with widescreen is active
 
-static boolean      st_compacthud;
+boolean      st_compacthud; // un-static for R_ExecuteSetViewSize()
 
 // [crispy] distinguish classic status bar with background and player face from Crispy HUD
 static boolean		st_crispyhud;
@@ -1565,7 +1569,7 @@ void ST_updateWidgets(void)
 #endif
 		plyr->tryopen[i]--;
 #if !defined(CRISPY_KEYBLINK_IN_CLASSIC_HUD)
-		if (st_crispyhud)
+		if (st_crispyhud || st_compacthud)
 #endif
 		{
 			keyboxes[i] = (plyr->tryopen[i] & KEYBLINKMASK) ? i + st_keyorskull[i] : -1;
@@ -1911,7 +1915,7 @@ void ST_drawWidgets(boolean refresh)
     // [crispy] draw the actual face widget background
     if (st_crispyhud && screenblocks == CRISPY_HUD)
     {
-	V_CopyRect(ST_FX + DELTAWIDTH, 1, st_backing_screen, SHORT(faceback->width), ST_HEIGHT - 1, ST_FX + DELTAWIDTH, ST_Y + 1);
+	V_CopyRect(ST_FX + UNIVERSAL_DELTAW, 1, st_backing_screen, SHORT(faceback->width), ST_HEIGHT - 1, ST_FX + UNIVERSAL_DELTAW, ST_Y + 1);
     }
 
     STlib_updateMultIcon(&w_faces, refresh);
@@ -1951,7 +1955,7 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
     // [crispy] immediately redraw status bar after help screens have been shown
     st_firsttime = st_firsttime || refresh || inhelpscreens;
 
-    st_compacthud = crispy->widescreen && screenblocks == 7;
+    st_compacthud = crispy->widescreen && screenblocks <= 10;
 
     // [crispy] distinguish classic status bar with background and player face from Crispy HUD
     st_crispyhud = screenblocks >= CRISPY_HUD && (!automapactive || crispy->automapoverlay);
@@ -2394,7 +2398,7 @@ void ST_DrawDemoTimer (const int time)
 
 	n = M_snprintf(buffer, sizeof(buffer), "%02i %05.02f", mins, secs);
 
-	x = (viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - DELTAWIDTH;
+	x = (viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - UNIVERSAL_DELTAW;
 
 	// [crispy] draw the Demo Timer widget with gray numbers
 	dp_translation = cr[CR_GRAY];
@@ -2415,4 +2419,3 @@ void ST_DrawDemoTimer (const int time)
 	dp_translation = NULL;
 	dp_translucent = false;
 }
-
