@@ -225,9 +225,9 @@ EXTRA_DIST =                        \
 metainfodir = $(prefix)/share/metainfo
 metainfo_DATA =                             \
         @PACKAGE_RDNS@.Doom.metainfo.xml
-#       @PACKAGE_RDNS@.Heretic.metainfo.xml \
-#       @PACKAGE_RDNS@.Hexen.metainfo.xml   \
-#       @PACKAGE_RDNS@.Strife.metainfo.xml
+        @PACKAGE_RDNS@.Heretic.metainfo.xml \
+        @PACKAGE_RDNS@.Hexen.metainfo.xml   \
+        @PACKAGE_RDNS@.Strife.metainfo.xml
 
 @PACKAGE_RDNS@.Doom.metainfo.xml : Doom.metainfo.xml
 	cp Doom.metainfo.xml $@
@@ -244,9 +244,9 @@ metainfo_DATA =                             \
 appdir = $(prefix)/share/applications
 app_DATA =                                 \
            @PACKAGE_RDNS@.Doom.desktop
-#          @PACKAGE_RDNS@.Heretic.desktop \
-#          @PACKAGE_RDNS@.Hexen.desktop   \
-#          @PACKAGE_RDNS@.Strife.desktop
+           @PACKAGE_RDNS@.Heretic.desktop \
+           @PACKAGE_RDNS@.Hexen.desktop   \
+           @PACKAGE_RDNS@.Strife.desktop
 
 @PACKAGE_RDNS@.Doom.desktop : Doom.desktop
 	cp Doom.desktop $@
