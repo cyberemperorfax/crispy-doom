@@ -1,20 +1,20 @@
 
-SUBDIRS = doom setup # heretic hexen strife
+SUBDIRS = doom setup heretic hexen
 
 execgamesdir = ${bindir}
 
 execgames_PROGRAMS = @PROGRAM_PREFIX@doom     \
-                     @PROGRAM_PREFIX@server
-EXTRA_PROGRAMS =     @PROGRAM_PREFIX@heretic  \
+                     @PROGRAM_PREFIX@heretic  \
                      @PROGRAM_PREFIX@hexen    \
-                     @PROGRAM_PREFIX@strife
+		     @PROGRAM_PREFIX@strife   \
+                     @PROGRAM_PREFIX@server
 
 noinst_PROGRAMS = @PROGRAM_PREFIX@setup
 
 SETUP_BINARIES = @PROGRAM_PREFIX@doom-setup$(EXEEXT)
-#                @PROGRAM_PREFIX@heretic-setup$(EXEEXT) \
-#                @PROGRAM_PREFIX@hexen-setup$(EXEEXT)   \
-#                @PROGRAM_PREFIX@strife-setup$(EXEEXT)
+                 @PROGRAM_PREFIX@heretic-setup$(EXEEXT) \
+                 @PROGRAM_PREFIX@hexen-setup$(EXEEXT)   \
+                 @PROGRAM_PREFIX@strife-setup$(EXEEXT)
 
 execgames_SCRIPTS = $(SETUP_BINARIES)
 
